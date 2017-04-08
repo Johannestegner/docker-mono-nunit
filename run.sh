@@ -13,15 +13,16 @@ NUNIT_PATH="/nunit/${NUNIT}tools/nunit3-console.exe"
 cp -R /app /usr/src/app/source
 cd /usr/src/app/source
 # If restore is empty, use solutions.
-RES=${RESTORE:SOLUTIONS}
+if [ -z ${RESTORE+x} ]; then RES=$SOLUTIONS; else RES=$RESTORE; fi
+echo "Restoring solutions: ${RES}..."
 # Restore all in the RESTORE env variable.
-for SLN in ${RESTORE//,/ }
+for SLN in ${RES//,/ }
 do
     nuget restore -NonInteractive $SLN
 done
-
 # Build all solutions in the SOLUTIONS env variable.
 COUNT=0
+echo "Building solutions: ${SOLUTIONS}..."
 for SLN in ${SOLUTIONS//,/ }
 do
     mkdir /usr/src/app/build/${COUNT}/
