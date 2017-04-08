@@ -1,5 +1,10 @@
-# docker-mono-nunit
+# jitesoft/mono-nunit
 Docker image for running nunit tests using mono.
+
+[Image on Docker hub](https://hub.docker.com/r/jitesoft/mono-nunit/)  
+[Repo on GitHub](https://github.com/Johannestegner/docker-mono-nunit)  
+
+### How-to:
 
 Add your source as a mounted volume to the `/app` dir.  
 Specify soltuions to build with the `SOLUTIONS` env variable, seperated with a `,`.  
