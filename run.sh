@@ -18,7 +18,7 @@ echo "Restoring: ${RES}..."
 nuget restore -NonInteractive $RES
 
 echo "Building: ${BUILD}..."
-xbuild /property:Configuration=Release /property:OutDir=/usr/src/app/build/ $BUILD
+xbuild /property:Configuration=Debug $BUILD
 cd /usr/src/app/source
 
 # For each project in the env TEST_PROJECTS run nunit tests.
