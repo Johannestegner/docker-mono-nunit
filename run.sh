@@ -12,27 +12,18 @@ NUNIT_PATH="/nunit/${NUNIT}tools/nunit3-console.exe"
 # Move the source so that restore don't add a bunch of packages to the folder.
 cp -R /app /usr/src/app/source
 cd /usr/src/app/source
-# If restore is empty, use solutions.
-if [ -z ${RESTORE+x} ]; then RES=$SOLUTIONS; else RES=$RESTORE; fi
-echo "Restoring solutions: ${RES}..."
-# Restore all in the RESTORE env variable.
-for SLN in ${RES//,/ }
-do
-    nuget restore -NonInteractive $SLN
-done
-# Build all solutions in the SOLUTIONS env variable.
-COUNT=0
-echo "Building solutions: ${SOLUTIONS}..."
-for SLN in ${SOLUTIONS//,/ }
-do
-    mkdir /usr/src/app/build/${COUNT}/
-    xbuild /property:Configuration=Release /property:OutDir=/usr/src/app/build/${COUNT}/ $SLN
-    let COUNT=COUNT+1
-done
+# If restore is empty, use "build" solution.
+if [ -z ${RESTORE+x} ]; then RES=$BUILD; else RES=$RESTORE; fi
+echo "Restoring: ${RES}..."
+nuget restore -NonInteractive $RES
+
+echo "Building: ${BUILD}..."
+xbuild /property:Configuration=Release /property:OutDir=/usr/src/app/build/ $BUILD
 cd /usr/src/app/source
 
 # For each project in the env TEST_PROJECTS run nunit tests.
 for PROJ in ${TEST_PROJECTS//,/ }
 do
+    echo "Testing: ${PROJ}"
     mono $NUNIT_PATH $PROJ
 done
